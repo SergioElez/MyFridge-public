@@ -1,0 +1,39 @@
+<section id="recipe" class="d-flex flex-row">
+  <div class="container">
+    <div class="d-flex" id="randomWrapper">
+      <div class="flex-40">
+      </div>
+      <div class="d-flex flex-col flex-60">
+        <div class="btnGroup">
+          <a tabindex="0" class="button btnSearchRecipe" routerLink="/category/{{recipeCategory}}">
+            <span>Más recetas de {{recipeCategory}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="four columns">
+        <img id="randomMealImg" src="{{ recipeThumb }}" />
+      </div>
+      <div class="eight columns mealMetadata" id="mealMetadata">
+        <ul>
+          <li *ngFor="let ingredient of recipeIngredients">
+            {{ ingredient }}
+          </li>
+        </ul>
+        <div class="row">
+          <div class="columns">
+            <!-- SI HAY VIDEO DE YOUTUBE SE MUESTRA -->
+            <a *ngIf="recipeYoutubeLink" href="{{ recipeYoutubeLink }}" target="_blank">Ver tutorial en YouTube</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="twelve columns">
+        <h5>{{ recipeName }}</h5>
+        <p id="recipeInstructions">{{ recipeInstructions }}</p>
+      </div>
+    </div>
+  </div>
+</section>

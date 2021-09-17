@@ -1,0 +1,34 @@
+a.brand:hover,
+a.brand:active,
+a.brand:visited {
+    color: inherit
+}
+.brand { 
+    color: white 
+}
+#menuList {
+    float: right;
+    font-size: 0.8em
+}
+#menuList > .nav-item a:hover,
+#menuList > .nav-item a:focus {
+    background-color: black;
+    color: white
+}
+#menuToggler { 
+    cursor: pointer;
+    height: auto;
+    width: auto;
+    font-size: 34px;
+    float: right;
+    border-radius: 5px;
+    background-color: transparent;
+    color: white;
+    -webkit-transition: background-color .3s ease;
+    -moz-transition: background-color .3s ease;
+    -o-transition: background-color .3s ease;
+    transition: background-color .3s ease;
+}
+#menuToggler:hover, #menuToggler:focus {
+    background-color: black
+}

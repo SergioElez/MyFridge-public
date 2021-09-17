@@ -1,0 +1,37 @@
+<section id="landing" class="d-flex flex-row">
+  <div class="container">
+    <div class="d-flex" id="landingWrapper">
+      <div class="d-flex flex-col">
+        <div>
+          <h4>No sabes que cocinar? <br />
+            <small>Busca una receta o prueba a darle botón de aleatorio</small>
+          </h4>
+          <!-- Cuando escribe en el input se cambia la variable de busqueda a tiempo real -->
+          <input class="u-full-width mb-0" type="text" placeholder="Buscar recetas" id="searchRecipe" #name
+            (keyup)="update(name.value)" />
+          <label class="error-text mb-0" *ngIf="inputError">Por favor, escribe el nombre de una receta.</label>
+        </div>
+
+        <div class="btnGroup">
+          <a type="button" mat-button color="primary" tabindex="0" class="button btnSearchRecipe" (click)="search()">
+            <span>Buscar Receta</span>
+          </a>
+          <a routerLink="/random" mat-button color="primary" tabindex="0" class="button btnRandomRecipe">
+            <span>Receta aleatoria</span>
+          </a>
+        </div>
+
+        <div class="row">
+          <div class="twelve columns">
+            <ul class="navbar u-full-width" id="NavBarCategory">
+              <li class="nav-item" *ngFor="let category of allCategories">
+                <a tabindex="0" class="navbar-meal-category"
+                  routerLink="category/{{category.strCategory}}">{{category.strCategory}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
