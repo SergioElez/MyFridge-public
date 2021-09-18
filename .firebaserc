@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "myfridge-6cf61"
+  },
+  "targets": {
+    "myfridge-6cf61": {
+      "hosting": {
+        "MyFridge": [
+          "myfridge-6cf61"
+        ]
+      }
+    }
   }
 }

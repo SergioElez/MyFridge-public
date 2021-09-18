@@ -5,8 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatDividerModule } from "@angular/material/divider";
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
-import { MatCardModule } from '@angular/material/card'; 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [],
@@ -17,7 +18,8 @@ import { MatCardModule } from '@angular/material/card';
     MatMenuModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule
   ],
   exports: [
     MatToolbarModule,

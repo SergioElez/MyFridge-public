@@ -28,7 +28,7 @@ export class LandingComponent implements OnInit {
       this.getRecipeCategories();
   }
 
-  // Get meal categories
+  // Obtener las categorias
   getRecipeCategories(): void {
     this.appService.getRecipeCategories().subscribe(data => {
       data.categories.forEach((category, index) => {
@@ -45,7 +45,7 @@ export class LandingComponent implements OnInit {
     //console.log(this.recipeName);
   }
 
-  // Navigate user to recipe list view
+  // Hace una navigate a la receta
   search(): void {
     console.log(this.recipeName);
     if (this.recipeName === undefined)

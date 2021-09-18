@@ -4,7 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: 'loginComponent',
     component: LoginComponent
   },
   { path: '', loadChildren: () => import('./components/landing/landing.module').then(m => m.LandingModule) },
@@ -12,7 +12,9 @@ const routes: Routes = [
   { path: 'landing', loadChildren: () => import('./components/landing/landing.module').then(m => m.LandingModule) },
   { path: 'category', loadChildren: () => import('./components/category/category.module').then(m => m.CategoryModule) },
   { path: 'recipe', loadChildren: () => import('./components/recipe/recipe.module').then(m => m.RecipeModule) },
-  { path: 'recipelist', loadChildren: () => import('./components/recipelist/recipelist.module').then(m => m.RecipelistModule) }
+  { path: 'recipelist', loadChildren: () => import('./components/recipelist/recipelist.module').then(m => m.RecipelistModule) },
+  { path: 'login', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule) },
+  { path: 'register', loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterModule) }
 ];
 
 @NgModule({

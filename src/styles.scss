@@ -65,6 +65,13 @@ img:not(:last-of-type) {
     color: white 
 }
 
+.link:hover,
+.link:focus,
+.link:active,
+.link:visited { 
+    color: var(--color); 
+}
+
 /* Flex */
 .d-flex {
     display: flex
