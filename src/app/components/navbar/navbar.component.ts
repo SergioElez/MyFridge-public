@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     {
       this.isLoggued = true;
       this.userName = user.email;
-      console.log(user)
+      // console.log(user.uid)
     }
   }
 

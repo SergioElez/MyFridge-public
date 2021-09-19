@@ -4,7 +4,7 @@
       <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
         <h2>Registro</h2>
         <div>
-          <input matInput type="text" placeholder="Nombre" formControlName="email" required>
+          <input matInput type="text" placeholder="Nombre" formControlName="name" required>
         </div>
         <div>
           <input matInput type="email" placeholder="Correo" formControlName="email" required>
@@ -13,9 +13,15 @@
           <input matInput type="password" placeholder="Contraseña" formControlName="password" required>
         </div>
         <div>
-          <input matInput type="password" placeholder="Contraseña otra vez" formControlName="password" required>
+          <input matInput type="password" placeholder="Contraseña otra vez" formControlName="password2" required>
         </div>
-        <button type="submit" color="primary">Register</button>
+        <span class="wrongField" *ngIf="wrongFields && submit">*Faltan campos por rellenar <br><br></span>
+        <span class="wrongField" *ngIf="wrongEmail && submit">*El correo no es valido <br><br></span>
+        <span class="wrongField" *ngIf="wrongPasswords && submit">*Las contraseñas no son iguales <br><br></span>
+        <span class="wrongField" *ngIf="wrongPasswordsLength && submit">*Las contraseñas deben tener minimo 6 caracteres
+          <br><br></span>
+
+        <button class="buttonSubmit" type="submit" color="primary">Register</button>
       </form>
     </mat-card-content>
     <p>Ya tienes cuenta? <a tabindex="0" class="link" [routerLink]="['/login']"> Logueate</a></p>

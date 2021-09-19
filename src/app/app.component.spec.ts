@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider'; 
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, _MatMenuDirectivesModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,9 +13,9 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        MatToolbarModule, 
+        MatToolbarModule,
         MatIconModule,
-        MatMenuModule, 
+        MatMenuModule,
         MatDividerModule,
         MatButtonModule
       ],
@@ -33,12 +33,12 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title and brand name 'The Hungry Recipes'`, () => {
+  it(`should have as title and brand name 'MyFridge'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const app = fixture.debugElement.componentInstance;
     const compiled = fixture.debugElement.nativeElement;
-    expect(app.title).toEqual('The Hungry Recipes');
+    expect(app.title).toEqual('MyFridge');
     expect(compiled.querySelector('a.brand').textContent).toEqual(app.title);
   });
 });

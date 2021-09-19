@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { Router, RouterEvent, NavigationStart, NavigationEnd } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AppService } from './services/app.service';
 
 @Component({
@@ -14,7 +16,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     router: Router,
-    private appService: AppService
   ) {
     this.loading = false;
     router.events.subscribe(
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
 
   ngOnInit(): void { }
 }

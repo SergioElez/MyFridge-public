@@ -57,19 +57,24 @@ img:not(:last-of-type) {
     transition: background-color .1s ease;
     color: white
 }
-.nav-link:hover,
+
+.nav-link:hover { 
+    color: var(--color)!important;
+    background-color: white !important;
+}
+
 .nav-link:focus,
 .nav-link:active,
 .nav-link:visited { 
     background-color: var(--color); 
     color: white 
 }
+.link{
+    color: var(--color) !important;
+}
 
-.link:hover,
-.link:focus,
-.link:active,
-.link:visited { 
-    color: var(--color); 
+.wrongField{
+    color: red;
 }
 
 /* Flex */
@@ -110,6 +115,20 @@ img:not(:last-of-type) {
     position: relative;
     top: 4px;
     left: 5px
+}
+
+// Botones formulario
+.buttonSubmit,
+.buttonSubmit:focus{
+    background-color: var(--color);
+    border: 3px solid var(--color);
+    color: white;
+}
+
+.buttonSubmit:hover{
+    background-color: white;
+    border: 3px solid var(--color);
+    color: var(--color);
 }
 
 /* Recetas */
