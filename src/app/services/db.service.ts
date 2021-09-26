@@ -94,7 +94,7 @@ export class DbService {
 
       // poner try o if no es null
       let list = users[2][recipeName];
-      console.log(list)
+      // console.log(list)
 
       // Asi recorro un objeto
       // info en https://www.cloudhadoop.com/2018/08/typescript-how-to-convert-object-to.html
@@ -108,8 +108,6 @@ export class DbService {
         subject.next(idRecipes);
       });
     })
-
-    console.log(subject)
 
     return subject;
 

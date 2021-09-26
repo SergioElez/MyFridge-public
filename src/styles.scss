@@ -19,6 +19,17 @@ body {
     background-color: whitesmoke;
     color: black
 }
+
+// Grid para las cards
+#grid {
+    margin-top:20px;
+    height: 100%;
+    display: grid;
+    grid-gap: 10px 10px;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
+}
+
 .heading { 
     color: var(--color) 
 }
@@ -51,6 +62,7 @@ img:not(:last-of-type) {
     display: inline
 }
 .nav-item .nav-link { 
+    margin: 0.2em;
     padding: 5px 20px;
     background-color: inherit;
     border-radius: 5px;

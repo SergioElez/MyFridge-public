@@ -15,6 +15,7 @@
         <div>
           <input matInput type="password" placeholder="Contraseña otra vez" formControlName="password2" required>
         </div>
+        <span class="wrongField" *ngIf="sameEmail && submit">*Ya existe una cuenta con el mismo correo <br><br></span>
         <span class="wrongField" *ngIf="wrongFields && submit">*Faltan campos por rellenar <br><br></span>
         <span class="wrongField" *ngIf="wrongEmail && submit">*El correo no es valido <br><br></span>
         <span class="wrongField" *ngIf="wrongPasswords && submit">*Las contraseñas no son iguales <br><br></span>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import firebase from 'firebase';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { DbService } from 'src/app/services/db.service';
@@ -21,12 +23,17 @@ export class RegisterComponent implements OnInit {
 
   // Variables para mostrar mensajes de error en el registro
   submit = false;
+  sameEmail = false;
   wrongFields = true;
   wrongEmail = true;
   wrongPasswords = true;
   wrongPasswordsLength = true;
 
-  constructor(private authService: AuthService, private dbService: DbService) { }
+  constructor(
+    private authService: AuthService,
+    private dbService: DbService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
   }
@@ -36,9 +43,25 @@ export class RegisterComponent implements OnInit {
 
     if (this.validRegister())
     {
-      const user = await this.authService.register(email, password);
+      var user = await this.authService.register(email, password);
 
-      this.dbService.createUser({ id: user["user"].uid, name: name, email: email });
+      // Si ya existe un usuario con el mismo correo muestra un mensaje
+      if (user === 'auth/email-already-in-use')
+      {
+        this.wrongFields = false;
+        this.wrongEmail = false;
+        this.wrongPasswords = false;
+        this.wrongPasswordsLength = false;
+        this.sameEmail = true;
+      }
+      else
+      {
+        this.dbService.createUser({ id: user["user"].uid, name: name, email: email });
+
+        // Navegar a perfil
+        this.router.navigate(['/profile'])
+      }
+
     }
   }
 
@@ -91,6 +114,11 @@ export class RegisterComponent implements OnInit {
       this.wrongPasswordsLength = true;
       return false;
     }
+
+    this.wrongFields = false;
+    this.wrongEmail = false;
+    this.wrongPasswords = false;
+    this.wrongPasswordsLength = false;
 
     return true;
   }

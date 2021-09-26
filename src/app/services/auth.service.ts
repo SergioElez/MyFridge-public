@@ -2,25 +2,47 @@ import { Injectable } from '@angular/core';
 import { first } from 'rxjs/operators';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-
+import { DbService } from './db.service';
+import { Observable } from 'rxjs';
+import auth from 'firebase';
+import { AppService } from './app.service';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: any;
 
-  constructor(public afAuth: AngularFireAuth) {
+  constructor(public afAuth: AngularFireAuth, public dbService: DbService, private appService: AppService) {
+
+    // Como obtener un usuario
+    // let user = this.dbService.getUser("69DHXLGnntbBAybMhU3TFROrb702")
+    // 
+    // user.subscribe(user => {
+    // console.log(JSON.parse(user));
+    // })
+    // 
+
+    // let list = appService.getFavouritesRecipeFromUser("69DHXLGnntbBAybMhU3TFROrb702")
+    // console.log(list);
 
   }
 
+  // Logueamos y guardamos el usuario en bd.currentUser
   async login(email: string, password: string) {
 
     try
     {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
-      this.user = this.afAuth.authState;
-      console.log(this.user);
+      // this.user = this.afAuth.authState;
+      // console.log(result["user"].uid);
+
+      let user = this.dbService.getUser(result["user"].uid);
+
+      user.subscribe(user => {
+        this.dbService.currentUser = JSON.parse(user);
+        // console.log("current user desde login");
+        // console.log(this.dbService.currentUser["name"]);
+      })
 
       return result;
     }
@@ -44,17 +66,30 @@ export class AuthService {
   async register(email: string, password: string) {
     try
     {
-      const result = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      const result = await this.afAuth.createUserWithEmailAndPassword(email, password)
+
+      // hacer un update y poner el nombre del user
+
       return result;
     }
-    catch (err)
+    catch (error)
     {
-      console.log(err);
+      if (error.code === 'auth/email-already-in-use')
+        return error.code;
     }
   }
 
   getCurrentUser() {
-    return this.afAuth.authState.pipe(first()).toPromise();
+    let userAuth = this.afAuth.authState.pipe(first()).toPromise();
+    return userAuth;
+    userAuth.then(u => {
+      return u;
+    })
+
+
+
+    // console.log(JSON.parse(user));
+    // })
   }
 }
 

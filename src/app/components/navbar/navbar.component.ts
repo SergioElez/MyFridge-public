@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,17 +12,23 @@ export class NavbarComponent implements OnInit {
 
   public isLoggued = false;
   public userName = "";
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, public dbService: DbService) { }
 
   async ngOnInit() {
-    const user = await this.authService.getCurrentUser();
+    const u = await this.authService.getCurrentUser();
 
-    if (user)
+    if (u != null)
     {
       this.isLoggued = true;
-      this.userName = user.email;
-      // console.log(user.uid)
+      this.userName = u["email"];
+
+      console.log(u)
+      let user = this.dbService.getUser(u["uid"])
+      user.subscribe(user => {
+        // console.log(user);
+      })
     }
+
   }
 
 }
