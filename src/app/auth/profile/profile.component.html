@@ -2,7 +2,8 @@
 
   <div *ngFor="let recipeList of recipeList">
     <!-- AQUI UTILIZO UNA PIPE -->
-    <h2>{{recipeList.title | titlecase}}</h2>
+    <h2 *ngIf='recipeList.title != "favourites"'>{{recipeList.title | titlecase}}</h2>
+    <h2 *ngIf='recipeList.title == "favourites"'>Favoritos</h2>
 
     <div class="row">
       <div class="twelve columns">

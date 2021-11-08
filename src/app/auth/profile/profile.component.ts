@@ -11,6 +11,7 @@ export class ProfileComponent implements OnInit {
 
   // Array de objetos Lista (titulo y lista de recetas)
   recipeList: { title: string, list: any[] }[] = [];
+  recipeListIds: { title: string, list: number[] }[] = [];
 
   // En este objeto metemos todas las listas de recetas
   objectRecipe;
@@ -25,6 +26,7 @@ export class ProfileComponent implements OnInit {
     let recipeList = await this.appService.getRecipeAllListFromUser("69DHXLGnntbBAybMhU3TFROrb702")
     recipeList.subscribe(listsRecipes => {
 
+      // Si por lo que sea no aun no ha hecho la peticion a la API, recarga la pagina para que la haga
       if (!this.objectRecipe)
         window.location.reload();
 
@@ -41,6 +43,9 @@ export class ProfileComponent implements OnInit {
               // En este objeto vamos a meter la lista de recetas que estamos recorriendo
               let newRecipeList = [];
               let newRecipeListName = listsRecipes[i].nameList;
+
+              // En esa variable guardamos los ids de las recetas de esta lista
+              let idRecipeList: number[] = [];
 
 
               // Setteamos la lista local con la que recibimos
@@ -65,6 +70,9 @@ export class ProfileComponent implements OnInit {
 
                 if (isNaN(currentRecipe))
                 {
+                  let id = currentRecipe[0]['idMeal'];
+                  idRecipeList.push(parseInt(id));
+
                   // Hago un push de la receta a la lista
                   newRecipeList.push(currentRecipe[0])
                   console.log(currentRecipe[0])
@@ -72,6 +80,8 @@ export class ProfileComponent implements OnInit {
                 }
                 else
                 {
+                  idRecipeList.push(currentRecipe);
+
                   // Si es un id buscamos la receta (Esto es porque a veces en lugar de recibir la receta recibe solo la id, 
                   // por eso la volvemos a pedir al servicio)
                   let newrecipe = this.appService.getRecipe(currentRecipe);
@@ -84,11 +94,15 @@ export class ProfileComponent implements OnInit {
 
               // Hacemos un push del la lista actual de recetas
               this.recipeList.push({ title: newRecipeListName, list: newRecipeList })
+              this.recipeListIds.push({ title: newRecipeListName, list: idRecipeList })
             }
           }
         }
 
-      // console.log(this.recipeList)
+      // console.log(this.recipeListIds)
+
+      // Guardamos la lista de ids para luego cachearla y utilizarla para consultar si tienes recetas favoritas
+      localStorage.setItem('userRecipeList', JSON.stringify(this.recipeListIds));
 
     })
 

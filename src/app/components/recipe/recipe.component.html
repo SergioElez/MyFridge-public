@@ -8,6 +8,8 @@
           <a tabindex="0" class="button btnSearchRecipe" routerLink="/category/{{recipeCategory}}">
             <span>Más recetas de {{recipeCategory}}</span>
           </a>
+          <br>
+          <br>
         </div>
       </div>
     </div>
@@ -15,11 +17,18 @@
       <div class="four columns">
         <img id="randomMealImg" src="{{ recipeThumb }}" />
       </div>
-
       <div>
+        <h4>{{ recipeName }}
+
+          <button style="float: right; border: 0px">
+            <mat-icon *ngIf="!isFavorited">favorite_border</mat-icon>
+            <mat-icon *ngIf="isFavorited">favorite</mat-icon>
+          </button>
+        </h4>
         <!-- SI HAY TAGS SE MUESTRAN -->
-        <h4 *ngIf="recipeTags">Tags: {{recipeTags}}</h4>
       </div>
+
+
 
       <div class="eight columns mealMetadata" id="mealMetadata">
         <ul>
@@ -40,7 +49,8 @@
     </div>
     <div class="row">
       <div class="twelve columns">
-        <h5>{{ recipeName }}</h5>
+        <h5 *ngIf="recipeTags">Tags: {{recipeTags}}</h5>
+        <!-- <h5>{{ recipeName }}</h5> -->
         <p id="recipeInstructions">{{ recipeInstructions }}</p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/services/app.service';
 import { ActivatedRoute } from '@angular/router';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-recipe',
@@ -16,12 +17,15 @@ export class RecipeComponent implements OnInit {
   recipeIngredients = [];
   recipeMeasures = [];
   recipeYoutubeLink: string;
-  recipeTags = [];
+  recipeTags;
   recipeInstructions: string;
+
+  isFavorited: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
-    private appService: AppService
+    private appService: AppService,
+    private dbService: DbService
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +48,11 @@ export class RecipeComponent implements OnInit {
       this.recipeCategory = recipe.strCategory;
       this.recipeInstructions = recipe.strInstructions;
       this.recipeYoutubeLink = recipe.strYoutube;
-      this.recipeTags = recipe.strTags;
+
+      // Ponemos espacios entre las comas
+      if (recipe.strTags)
+        this.recipeTags = recipe.strTags.replaceAll(',', ', ')
+
 
       for (let index = 1; index <= 20; index++)
       {
@@ -66,6 +74,33 @@ export class RecipeComponent implements OnInit {
 
       this.appService.setSpecificRecipe(recipe);
     });
+
+    if (this.isThisRecipeFavourite())
+      this.isFavorited = true;
+  }
+
+  isThisRecipeFavourite() {
+
+    var userRecipeList = JSON.parse(localStorage.getItem('userRecipeList'));
+
+    for (var list = 0; list < userRecipeList.length; list++)
+    {
+      console.log(userRecipeList[list]['title'])
+
+      for (var recipe = 0; recipe < userRecipeList[list]['list'].length; recipe++)
+      {
+        let currentRecipeId = userRecipeList[list]['list'][recipe]
+
+        if (this.recipeID == currentRecipeId)
+        {
+          return true;
+        }
+
+      }
+
+    }
+
+    return false;
   }
 
 }
