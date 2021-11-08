@@ -1,22 +1,23 @@
 <div class="container">
 
-  <div *ngFor="let recipeList of recipes">
-    <h2>{{recipeList.title}}</h2>
+  <div *ngFor="let recipeList of recipeList">
+    <!-- AQUI UTILIZO UNA PIPE -->
+    <h2>{{recipeList.title | titlecase}}</h2>
 
     <div class="row">
       <div class="twelve columns">
-        <div id="grid" *ngIf="recipes">
-          <mat-card *ngFor="let recipe of recipeList.list">
+        <div id="grid" *ngIf="recipeList">
+          <mat-card *ngFor="let recipe of recipeList['list']">
             <img mat-card-image src="{{recipe.strMealThumb}}" alt="">
             <mat-card-content>
-              <h5>{{recipe.strMeal}}</h5>
+              <h5>{{recipe.strMeal }}</h5>
             </mat-card-content>
             <mat-card-actions>
               <a mat-raised-button routerLink="/recipe/{{recipe.idMeal}}">Ver receta</a>
             </mat-card-actions>
           </mat-card>
         </div>
-        <p id="noRecipes" *ngIf="recipes.length === 0">
+        <p id="noRecipes" *ngIf="recipeList.length === 0">
           No se han encontrado recetas. Busca otra vez.
         </p>
       </div>

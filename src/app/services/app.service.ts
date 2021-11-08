@@ -106,6 +106,87 @@ export class AppService {
     return this.http.get(environment.apiURL.recipeByName + '?s=' + name);
   }
 
+  // Obtengo una receta por nombre (Este metodo me costo bastante por el tema de los observer y subscribe)
+  getRecipeAllListFromUser(userID: string): Observable<Object> {
+
+    var subject = new Subject<Object>();
+
+    // Array de objetos lista que contiene el nombre de la lista y la lista de recetas
+    let recipeList: { nameList: string, list: object }[] = [];
+
+    // Obtenemos los ids de las recetas favoritas
+    let listRecipesId = this.dbService.getRecipeAllListFromUser(userID)
+
+    // Hacemos el subscribe ya que necesito obtener los ids de la base de datos  
+    listRecipesId.subscribe(idRecipeList => {
+      // console.log(idRecipeList["idRecipes"]);
+
+      // Recorremos la lista de listas
+      for (let i = 0; i < idRecipeList["idRecipes"].length; i++) 
+      {
+        // Con esto obtengo el nombre de la lista actual (favoritos, lista1, lista2, etc)
+        let currentListName = Object.getOwnPropertyNames(idRecipeList["idRecipes"][i])[0];
+
+        // La lista la cojo asi
+        let list = idRecipeList["idRecipes"][i][currentListName];
+
+        // Añadimos las propiedades de la lista (recipe-0, recipe-1, etc)
+        // Esto es para saber cuandos ids vamos a tener que consultar
+        let propIdNames = [];
+        for (let propName in list)
+        {
+          propIdNames.push(propName);
+        }
+
+        // Recorremos cada lista de ids
+        for (let y = 0; y < propIdNames.length; y++)
+        {
+          let currentRecipeId = list[propIdNames[y]];
+
+          let recipe = this.getRecipe(currentRecipeId);
+
+          recipe.subscribe(recipe => {
+            // Sobreescribimos el objeto con la informacion de la receta
+            // (Substituimos el id de la receta por la receta que obtenemos de la API)
+            list[propIdNames[y]] = recipe["meals"];
+
+            let newRecipe = { nameList: currentListName, list: list };
+
+            // Comprobamos que no haya duplicados
+            if (this.CheckDuplicates(newRecipe, recipeList))
+              recipeList.push(newRecipe)
+
+            // console.log(JSON.stringify(recipeList))
+
+            subject.next(recipeList);
+            return subject
+          })
+
+        }
+
+      }
+
+      subject.next(recipeList);
+      return subject
+
+    })
+    subject.subscribe(listsRecipes => {
+      // console.log(listsRecipes)
+    })
+
+    return subject
+  }
+
+  CheckDuplicates(object, recipeList): boolean {
+
+    for (let i = 0; i < recipeList.length; i++)
+    {
+      if (recipeList[i].nameList == object.nameList)
+        return false;
+    }
+
+    return true;
+  }
 
   // Obtengo una receta por nombre (Este metodo me costo bastante por el tema de los observer y subscribe)
   getRecipeListFromUser(userID: string, list): Observable<any> {

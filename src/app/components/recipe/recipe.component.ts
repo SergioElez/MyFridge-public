@@ -14,6 +14,7 @@ export class RecipeComponent implements OnInit {
   recipeThumb: string;
   recipeName: string;
   recipeIngredients = [];
+  recipeMeasures = [];
   recipeYoutubeLink: string;
   recipeTags = [];
   recipeInstructions: string;
@@ -28,13 +29,13 @@ export class RecipeComponent implements OnInit {
     this.fetchRecipe(this.recipeID);
   }
 
-  // Get ':category' param value
   getRecipeID(): void {
     this.recipeID = this.route.snapshot.paramMap.get('id');
   }
 
   fetchRecipe(recipeID: string): void {
     this.recipeIngredients = [];
+    this.recipeMeasures = [];
 
     this.appService.getRecipe(recipeID).subscribe(recipe => {
       recipe = recipe.meals[0];
@@ -43,6 +44,7 @@ export class RecipeComponent implements OnInit {
       this.recipeCategory = recipe.strCategory;
       this.recipeInstructions = recipe.strInstructions;
       this.recipeYoutubeLink = recipe.strYoutube;
+      this.recipeTags = recipe.strTags;
 
       for (let index = 1; index <= 20; index++)
       {
@@ -51,12 +53,16 @@ export class RecipeComponent implements OnInit {
 
         if (recipe[ingredient] && recipe[measure])
         {
-          this.recipeIngredients.push(recipe[ingredient] + ' - ' + recipe[measure]);
+          this.recipeIngredients.push(recipe[ingredient]);
+          this.recipeMeasures.push(recipe[measure]);
         } else if (recipe[ingredient])
         {
           this.recipeIngredients.push(recipe[ingredient]);
         }
       }
+
+      // console.log(this.recipeIngredients)
+      // console.log(this.recipeMeasures)
 
       this.appService.setSpecificRecipe(recipe);
     });

@@ -15,12 +15,21 @@
       <div class="four columns">
         <img id="randomMealImg" src="{{ recipeThumb }}" />
       </div>
+
+      <div>
+        <!-- SI HAY TAGS SE MUESTRAN -->
+        <h4 *ngIf="recipeTags">Tags: {{recipeTags}}</h4>
+      </div>
+
       <div class="eight columns mealMetadata" id="mealMetadata">
         <ul>
-          <li *ngFor="let ingredient of recipeIngredients">
-            {{ ingredient }}
+          <!-- Mostramos los ingredientes con las cantidades -->
+          <li *ngFor="let ingredient of recipeIngredients; let i = index">
+            {{ ingredient }} - <b> {{recipeMeasures[i]}} </b>
           </li>
         </ul>
+
+
         <div class="row">
           <div class="columns">
             <!-- SI HAY VIDEO DE YOUTUBE SE MUESTRA -->

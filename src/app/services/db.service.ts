@@ -30,8 +30,7 @@ export class DbService {
   constructor(private db: AngularFireDatabase, public afAuth: AngularFireAuth) {
 
     // Pruebas
-
-    // let recipelist = this.getRecipeListFromUser("69DHXLGnntbBAybMhU3TFROrb702", "lista1")
+    // let recipelist = this.getRecipeAllListFromUser("69DHXLGnntbBAybMhU3TFROrb702")
     // 
     // recipelist.subscribe(user => {
     // console.log(user)
@@ -81,6 +80,37 @@ export class DbService {
       console.log("Usuario current")
       console.log(this.currentUser)
     })
+  }
+
+  getRecipeAllListFromUser(userId): Observable<Object> {
+    const users = this.db.list(`users/${ userId }`).valueChanges();
+
+    var idRecipes: Object[] = [];
+    let idRecipeList: { length: number, idRecipes: Object[] };
+
+    var subject = new Subject<Object>();
+
+    users.subscribe((users) => {
+
+      // poner try o if no es null
+      let list = users[2];
+
+      // Asi recorro un objeto
+      // info en https://www.cloudhadoop.com/2018/08/typescript-how-to-convert-object-to.html
+      Object.keys(list).map(function (key) {
+
+        idRecipes.push({ [key]: list[key] })
+        // console.log(idRecipes.length)
+
+        idRecipeList = { length: idRecipes.length, idRecipes: idRecipes }
+        // console.log(idRecipeList)
+
+      });
+      subject.next(idRecipeList);
+    })
+
+    return subject;
+
   }
 
   getRecipeListFromUser(userId, recipeName): Observable<string[]> {
