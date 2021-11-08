@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="four columns">
-                <img id="categoryThumb" src="{{categoryInfo.strCategoryThumb}}" />
+                <img id="categoryThumb" *ngIf="categoryInfo.strCategoryThumb" src="{{categoryInfo.strCategoryThumb}}" />
             </div>
             <div class="eight columns">
                 <aside>
@@ -15,7 +15,7 @@
             <div class="twelve columns">
                 <div id="grid">
                     <mat-card *ngFor="let meal of recipesBySpecificCategory">
-                        <img mat-card-image src="{{meal.strMealThumb}}" alt="">
+                        <img mat-card-image src="{{meal.strMealThumb}}" alt="{{meal.strMealThumb}}">
                         <mat-card-content>
                             <h5>{{meal.strMeal}}</h5>
                         </mat-card-content>

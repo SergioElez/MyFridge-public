@@ -6,6 +6,7 @@ import { ProfileComponent } from './profile.component';
 import { MaterialModule, } from '../../modules/material/material.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -15,5 +16,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     ReactiveFormsModule,
   ]
+
 })
 export class LoginModule { }

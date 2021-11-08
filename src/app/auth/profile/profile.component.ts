@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AppService } from 'src/app/services/app.service';
 
 @Component({
@@ -10,100 +11,25 @@ export class ProfileComponent implements OnInit {
 
   // Array de objetos Lista (titulo y lista de recetas)
   recipeList: { title: string, list: any[] }[] = [];
-  // listOfRecipesList: { title: string, list: { title: string, list: any[] }[] }[] = [];
 
-  objetoRecetas;
+  // En este objeto metemos todas las listas de recetas
+  objectRecipe;
 
-  listas = []
 
-  cant = "";
-  prueba = "";
-  recetas;
-  favoritos;
-
-  //recipeList: { nameList: string, list: object }[] = [];
-
-  // Variable que indice el indice de la array de listas
-  index = 0;
-  cantidad;
-
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService,
+    private router: Router) { }
 
   async ngOnInit() {
 
-    // let favouriteRecipeList = await this.appService.getRecipeListFromUser("69DHXLGnntbBAybMhU3TFROrb702", "lista1")
-    // 
-    // this.AddRecipeList(favouriteRecipeList, "Favoritos");
-
-
-    // 
-    // let recipeList2 = await this.appService.getRecipeAllListFromUser("69DHXLGnntbBAybMhU3TFROrb702")
-    // 
-    // recipeList2.subscribe(listsRecipes => {
-    // if (this.cantidad && this.cantidad > 0 && this.objetoRecetas)
-    // {
-    // console.log(this.objetoRecetas)
-    // console.log(this.cantidad)
-    // 
-    // 
-
-
-    // this.prueba = JSON.stringify(listsRecipes);
-    // this.recetas = listsRecipes;
-    // this.cant = listsRecipes['length']
-    // 
-    // 
-    // let newRecipeList = [];
-    // let newRecipeName;
-    // 
-    // 
-    // 
-    // 
-    // for (let i = 0; i < this.cantidad; i++)
-    // {
-    // 
-    // if (listsRecipes && listsRecipes['length'] > 0)
-    // {
-    // 
-    // if (listsRecipes[i])
-    // {
-    // 
-    // let currentList = listsRecipes[i].list['recipe-' + i];
-    // 
-    // if (isNaN(currentList) && currentList != undefined)
-    // {
-    // console.log(currentList[0])
-    // this.favoritos = currentList[0];
-    // this.listas.push(currentList[0]);
-    // }
-    // 
-    // newRecipeName = listsRecipes[i]["nameList"];
-    // console.log(newRecipeName)
-    // 
-    // if (newRecipeName && currentList && isNaN(currentList) && this.CheckDuplicates(currentList[0]["idMeal"], newRecipeList, newRecipeName))
-    // {
-    // newRecipeList.push(currentList[0])
-    // }
-    // 
-    // }
-    // if (newRecipeList.length > 0)
-    // this.recipes.push({ title: newRecipeName, list: newRecipeList })
-    // 
-    // console.log(newRecipeName)
-    // console.log(newRecipeList)
-    // 
-    // }
-    // 
-    // }
-    // }
-    // })
-
-
+    // Obtenemos las listas del usuario actual
     let recipeList = await this.appService.getRecipeAllListFromUser("69DHXLGnntbBAybMhU3TFROrb702")
     recipeList.subscribe(listsRecipes => {
 
-      if (this.objetoRecetas.length > 0)
-        for (let i = 0; i < this.objetoRecetas.length; i++)
+      if (!this.objectRecipe)
+        window.location.reload();
+
+      if (this.objectRecipe && this.objectRecipe.length > 0)
+        for (let i = 0; i < this.objectRecipe.length; i++)
         {
           if (listsRecipes[i])
           {
@@ -172,24 +98,13 @@ export class ProfileComponent implements OnInit {
 
     let recipeListGet = await this.appService.getRecipeAllListFromUser("69DHXLGnntbBAybMhU3TFROrb702")
     recipeListGet.subscribe(listsRecipes => {
-      // this.cantidad = listsRecipes['length'];
-      this.objetoRecetas = listsRecipes;
+      this.objectRecipe = listsRecipes;
     })
-
-
-    // this.AddRecipeList(recipeList, "recipeList");
-
 
   }
 
   // Comprobamos que no haya recetas duplicadas
   isDuplicate(listName): boolean {
-
-    // for (let i = 0; i < list.length; i++)
-    // {
-    // if (list[i]["idMeal"] === id)
-    // return false;
-    // }
 
     for (let i = 0; i < this.recipeList.length; i++)
     {
