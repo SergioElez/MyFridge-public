@@ -20,11 +20,12 @@ import { AuthService } from './auth.service';
 // }
 // }
 
+
 export class DbService {
 
-  // user: User = new User();
 
   public currentUser: Observable<object>;
+
 
 
   constructor(private db: AngularFireDatabase, public afAuth: AngularFireAuth) {
@@ -35,11 +36,8 @@ export class DbService {
     // recipelist.subscribe(user => {
     // console.log(user)
     // })
-
-
-
-
   }
+
 
   // Me daba problemas el obtener un usuario ya que no sabia devolver un observable correctamente
   // Esto me ha ayudado
@@ -140,6 +138,59 @@ export class DbService {
     })
 
     return subject;
+
+  }
+
+  addRecipeToCategory(idRecipe, category) {
+    // Obtenemos el id y email del usurio concurrente del localStorage
+    const { id, email } = JSON.parse(localStorage.getItem('currentUser'));
+
+
+    // const categoryDb = this.db.object(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }`);
+    console.log(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists`)
+
+    // Obtenemos las listas de recetas de la categoria
+    const itemsRef = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists`);
+    console.log(itemsRef['lenght']);
+
+    let canInsert: boolean = true;
+
+    let number;
+    //  Ahora obtenemos la cantidad de recetas que tiene esta lista
+    const lists = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }`).valueChanges();
+    lists.subscribe((users) => {
+
+      number = users.length + 1
+
+      console.log(users.length);
+
+
+      console.log(number);
+
+      let newIdRecipe = "recipe-" + number;
+      console.log(newIdRecipe);
+
+      // Creamos el objeto que va acontener el id de la receta
+      let object = { newIdRecipe: idRecipe };
+
+      // Modificamos la key del objeto para recipe-numero
+      Object.defineProperty(object, newIdRecipe,
+        Object.getOwnPropertyDescriptor(object, 'newIdRecipe'));
+      delete object['newIdRecipe'];
+
+      // Comprobar si ya existe la receta en la lista
+      if (canInsert)
+      {
+        itemsRef.update(category, object);
+        canInsert = false;
+      }
+    })
+
+
+
+    // user.set({ id: id, name: name });
+
+
 
   }
 }

@@ -3,7 +3,7 @@
 }
 #mealImg {
     height: 80%;
-    width: 80%
+    width: 80%;
 }
 #mealMetadata {
     font-size: 0.90em;
@@ -17,4 +17,14 @@ h5 {
 }
 .heading {
     margin-bottom: 10px
+}
+img {
+    border-radius:25% !important;
+    margin: 5%;
+}
+
+#categories{
+    text-align: center;
+    	display: inline;;
+        list-style: none;
 }
