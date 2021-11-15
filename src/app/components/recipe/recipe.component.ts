@@ -132,6 +132,7 @@ export class RecipeComponent implements OnInit {
   }
 
   addThisRecipeToUserList(userList) {
+    this.dbService.addRecipeToCategory(this.recipeID, userList);
     console.log(userList)
   }
 

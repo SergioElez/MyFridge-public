@@ -15,38 +15,37 @@
     </div>
     <div class="row">
       <div class="four columns">
-        <img id="randomMealImg" src="{{ recipeThumb }}" />
+        <img *ngIf="!clickAddToCategory" id="randomMealImg" src="{{ recipeThumb }}" />
       </div>
 
       <div id="categories" *ngIf="clickAddToCategory">
-        <li *ngFor="let list of userLists">
+        <li>Añadir esta receta a una de tus listas:</li>
+        <li *ngFor="let list of userLists" (click)="addThisRecipeToUserList(list.title)">
           {{list.title}}
-          <mat-icon (click)="addThisRecipeToUserList(list.title)">library_add</mat-icon>
+          <mat-icon>add</mat-icon>
+          <!-- <mat-icon (click)="addThisRecipeToUserList(list.title)">clear</mat-icon> -->
         </li>
       </div>
 
       <div>
-        <h4>{{ recipeName }}
+        <h4 style="text-align:center">{{ recipeName }}
 
-          <button (click)="clickAddRecipeToFavourite()" *ngIf="!isFavorited" style="float: right; border: 0px">
+          <button (click)="clickAddRecipeToFavourite()" *ngIf="!isFavorited"
+            style="float: right; border: 0px; padding: 0px">
             <mat-icon>favorite_border</mat-icon>
           </button>
 
-          <button (click)="removeFromFavourites()" *ngIf="isFavorited" style="float: right; border: 0px">
+          <button (click)="removeFromFavourites()" *ngIf="isFavorited" style="float: right; border: 0px; padding: 5px">
             <mat-icon>favorite</mat-icon>
           </button>
 
-          <button (click)="addToCategory()" *ngIf="!clickAddToCategory" style="float: right; border: 0px">
+          <button (click)="addToCategory()" *ngIf="!clickAddToCategory" style="float: right; border: 0px; padding: 5px">
             <mat-icon>folder</mat-icon>
           </button>
 
-          <button (click)="addToCategory()" *ngIf="clickAddToCategory" style="float: right; border: 0px">
+          <button (click)="addToCategory()" *ngIf="clickAddToCategory" style="float: right; border: 0px; padding: 5px">
             <mat-icon>folder_open</mat-icon>
           </button>
-
-
-
-
         </h4>
 
         <!-- SI HAY TAGS SE MUESTRAN -->
@@ -58,7 +57,7 @@
         <ul>
           <!-- Mostramos los ingredientes con las cantidades -->
           <li *ngFor="let ingredient of recipeIngredients; let i = index">
-            {{ ingredient }} - <b> {{recipeMeasures[i]}} </b>
+            {{ ingredient | titlecase }} - <b> {{recipeMeasures[i]}} </b>
           </li>
         </ul>
 

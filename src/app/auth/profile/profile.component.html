@@ -1,20 +1,68 @@
 <div class="container">
+  <br>
+
+  <h5>Crear listas de recetas</h5>
+  <input type="text" placeholder="Lista de ejemplo" [(ngModel)]="newListName">
+  <button (click)="createNewRecipeList(newListName)" style="margin:0; padding:0.5em; border: 0px">
+    <mat-icon>library_add</mat-icon>
+  </button>
+
+  <span *ngIf='createdList == true'>Lista Creada</span>
+
+  <br><br>
+
+  <h2>{{newListName}}</h2>
+
 
   <div *ngFor="let recipeList of recipeList">
+
     <!-- AQUI UTILIZO UNA PIPE -->
-    <h2 *ngIf='recipeList.title != "favourites"'>{{recipeList.title | titlecase}}</h2>
-    <h2 *ngIf='recipeList.title == "favourites"'>Favoritos</h2>
+    <!-- HACEMOS QUE SI NO HAY RECETAS EN ESTA CATEGORIA NO MUESTRA EL TITULO -->
+    <h2 *ngIf='recipeList.title != "favourites" && recipeList.list.length > 0'>{{recipeList.title | titlecase}}
+      <button style="border: 0px; padding: 5px">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </h2>
+    <h2 *ngIf='recipeList.title == "favourites" && recipeList.list.length > 0'>Favoritos
+      <button (click)="deleteList(recipeList.title)" style="border: 0px; padding: 5px">
+        <mat-icon *ngIf="!clickDeleteList">clear</mat-icon>
+        <mat-icon *ngIf="clickDeleteList">cancel</mat-icon>
+      </button>
+
+    </h2>
+
+    <span *ngIf="clickDeleteList && listNameToDelete == recipeList.title">Quieres borrar esta lista?
+      <button style="border: 0px; padding: 5px">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <button style="border: 0px; padding: 5px">
+        <mat-icon>check</mat-icon>
+      </button>
+    </span>
+
+
 
     <div class="row">
       <div class="twelve columns">
         <div id="grid" *ngIf="recipeList">
           <mat-card *ngFor="let recipe of recipeList['list']">
-            <img mat-card-image src="{{recipe.strMealThumb}}" alt="">
+            <a mat-raised-button routerLink="/recipe/{{recipe.idMeal}}">
+              <img mat-card-image src="{{recipe.strMealThumb}}" alt="">
+            </a>
+
             <mat-card-content>
-              <h5>{{recipe.strMeal }}</h5>
+              <h5>{{recipe.strMeal }}
+
+
+                <!-- <button (click)="clickAddRecipeToFavourite()" *ngIf="!isFavorited" -->
+                <!-- style="float: right; border: 0px; color: red"> -->
+                <!-- <mat-icon>clear</mat-icon> -->
+                <!-- </button> -->
+              </h5>
             </mat-card-content>
             <mat-card-actions>
-              <a mat-raised-button routerLink="/recipe/{{recipe.idMeal}}">Ver receta</a>
+              <a mat-raised-button (click)="deleteRecipeFromList(recipeList.title, recipe.idFirebase, recipe.idMeal)">
+                Borrar de la lista</a>
             </mat-card-actions>
           </mat-card>
         </div>

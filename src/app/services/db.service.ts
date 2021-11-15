@@ -160,7 +160,7 @@ export class DbService {
     const lists = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }`).valueChanges();
     lists.subscribe((users) => {
 
-      number = users.length + 1
+      number = users.length
 
       console.log(users.length);
 
@@ -170,8 +170,9 @@ export class DbService {
       let newIdRecipe = "recipe-" + number;
       console.log(newIdRecipe);
 
+
       // Creamos el objeto que va acontener el id de la receta
-      let object = { newIdRecipe: idRecipe };
+      let object = { newIdRecipe: parseInt(idRecipe) };
 
       // Modificamos la key del objeto para recipe-numero
       Object.defineProperty(object, newIdRecipe,
@@ -186,11 +187,46 @@ export class DbService {
       }
     })
 
-
-
     // user.set({ id: id, name: name });
 
+  }
 
+  deleteRecipeFromCategory(idFirebase, idRecipe, category) {
+    // Obtenemos el id y email del usurio concurrente del localStorage
+    const { id, email } = JSON.parse(localStorage.getItem('currentUser'));
 
+    console.log(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }/${ idFirebase }`)
+
+    // Con esto borramos la receta pero para este proyecto en lugar de borrar la receta la ocultamos
+    //this.db.object(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }/${ idFirebase }`).remove();
+
+    // Creamos el objeto que va acontener el id de la receta
+    let object = { newIdRecipe: "-" + idRecipe };
+
+    // Modificamos la key del objeto para recipe-numero
+    Object.defineProperty(object, idFirebase,
+      Object.getOwnPropertyDescriptor(object, 'newIdRecipe'));
+    delete object['newIdRecipe'];
+
+    console.log(object);
+
+    const itemsRef = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists`);
+    itemsRef.update(category, object);
+
+  }
+
+  createNewRecipeList(listName) {
+    const itemsRef = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702`);
+
+    let object = { listName: { "recipe-0": "0" } };
+
+    // Modificamos la key del objeto
+    Object.defineProperty(object, listName,
+      Object.getOwnPropertyDescriptor(object, 'listName'));
+    delete object['listName'];
+
+    console.log(object)
+
+    itemsRef.update("userLists", object);
   }
 }

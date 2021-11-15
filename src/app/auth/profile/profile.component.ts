@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/services/app.service';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,12 +13,21 @@ export class ProfileComponent implements OnInit {
   // Array de objetos Lista (titulo y lista de recetas)
   recipeList: { title: string, list: any[] }[] = [];
   recipeListIds: { title: string, list: number[] }[] = [];
+  recipeListFirebaseIds: { idFirebase: string, idRecipes: number }[] = [];
 
   // En este objeto metemos todas las listas de recetas
   objectRecipe;
 
+  newListName: string = '';
 
-  constructor(private appService: AppService,
+  createdList: boolean = false;
+
+  listNameToDelete: string;
+  clickDeleteList: boolean = false;
+
+  constructor(
+    private db: DbService,
+    private appService: AppService,
     private router: Router) { }
 
   async ngOnInit() {
@@ -47,7 +57,6 @@ export class ProfileComponent implements OnInit {
               // En esa variable guardamos los ids de las recetas de esta lista
               let idRecipeList: number[] = [];
 
-
               // Setteamos la lista local con la que recibimos
               let currentList = listsRecipes[i]['list'];
 
@@ -68,27 +77,44 @@ export class ProfileComponent implements OnInit {
 
                 let currentRecipe = listsRecipes[i]['list']['recipe-' + recipe];
 
-                if (isNaN(currentRecipe))
+                // SI LA RECETA NO ESTA OCULTA
+                if (currentRecipe)
                 {
-                  let id = currentRecipe[0]['idMeal'];
-                  idRecipeList.push(parseInt(id));
+                  if (isNaN(currentRecipe))
+                  {
+                    if (currentRecipe && currentRecipe[0])
+                    {
+                      let id = currentRecipe[0]['idMeal'];
+                      idRecipeList.push(parseInt(id));
 
-                  // Hago un push de la receta a la lista
-                  newRecipeList.push(currentRecipe[0])
-                  console.log(currentRecipe[0])
+                      // Anyadimos el id de firebase para luego poder utiliarlo
+                      currentRecipe[0].idFirebase = propIdNames[recipe];
 
+                      // Hago un push de la receta a la lista
+                      newRecipeList.push(currentRecipe[0])
+
+                    }
+                  }
+                  else
+                  {
+                    idRecipeList.push(currentRecipe);
+
+                    // Si es un id buscamos la receta (Esto es porque a veces en lugar de recibir la receta recibe solo la id, 
+                    // por eso la volvemos a pedir al servicio)
+                    let newrecipe = this.appService.getRecipe(currentRecipe);
+                    newrecipe.subscribe(rec => {
+
+                      if (rec['meals'])
+                      {
+                        // Anyadimos el id de firebase para luego poder utiliarlo
+                        rec['meals'][0].idFirebase = propIdNames[recipe];
+
+                        newRecipeList.push(rec['meals'][0])
+                      }
+                    })
+                  }
                 }
-                else
-                {
-                  idRecipeList.push(currentRecipe);
 
-                  // Si es un id buscamos la receta (Esto es porque a veces en lugar de recibir la receta recibe solo la id, 
-                  // por eso la volvemos a pedir al servicio)
-                  let newrecipe = this.appService.getRecipe(currentRecipe);
-                  newrecipe.subscribe(recipe => {
-                    newRecipeList.push(recipe['meals'][0])
-                  })
-                }
 
               }
 
@@ -130,4 +156,35 @@ export class ProfileComponent implements OnInit {
 
     return false;
   }
+
+  deleteRecipeFromList(category, idFirebase, idRecipe): void {
+    console.log(idFirebase)
+    this.db.deleteRecipeFromCategory(idFirebase, idRecipe, category);
+  }
+
+  createNewRecipeList(listName): void {
+    if (listName.length > 0)
+    {
+      this.createdList = true;
+      console.log(this.createdList)
+      this.db.createNewRecipeList(listName);
+      this.newListName = '';
+    }
+
+  }
+
+  deleteList(listName) {
+    console.log(listName)
+    this.clickDeleteList = !this.clickDeleteList;
+    this.listNameToDelete = listName;
+  }
+
+  acceptDeleteList() {
+
+  }
+
+  cancelDeleteList() {
+
+  }
+
 }
