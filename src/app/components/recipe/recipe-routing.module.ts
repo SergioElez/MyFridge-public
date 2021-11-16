@@ -3,12 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { RecipeComponent } from './recipe.component';
 
+
+
 const routes: Routes = [
   {
-     path: ':id', 
-     component: RecipeComponent 
-    }
-  ];
+    path: ':id',
+    component: RecipeComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

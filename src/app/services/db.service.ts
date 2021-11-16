@@ -1,3 +1,4 @@
+import { first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
 import { Observable, Subject } from 'rxjs';
@@ -90,21 +91,28 @@ export class DbService {
 
     users.subscribe((users) => {
 
-      // poner try o if no es null
-      let list = users[2];
+      if (users.length > 0)
+      {
+        // poner try o if no es null
+        let list = users[2];
 
-      // Asi recorro un objeto
-      // info en https://www.cloudhadoop.com/2018/08/typescript-how-to-convert-object-to.html
-      Object.keys(list).map(function (key) {
+        // Asi recorro un objeto
+        // info en https://www.cloudhadoop.com/2018/08/typescript-how-to-convert-object-to.html
+        Object.keys(list).map(function (key) {
 
-        idRecipes.push({ [key]: list[key] })
-        // console.log(idRecipes.length)
+          idRecipes.push({ [key]: list[key] })
+          // console.log(idRecipes.length)
 
-        idRecipeList = { length: idRecipes.length, idRecipes: idRecipes }
-        // console.log(idRecipeList)
+          idRecipeList = { length: idRecipes.length, idRecipes: idRecipes }
+          // console.log(idRecipeList)
 
-      });
-      subject.next(idRecipeList);
+        });
+        subject.next(idRecipeList);
+      }
+      else
+        console.log(`No se encuentra el usuario!! ${ userId }`)
+
+
     })
 
     return subject;
@@ -147,17 +155,17 @@ export class DbService {
 
 
     // const categoryDb = this.db.object(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }`);
-    console.log(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists`)
+    console.log(`users/${ this.getCurrentUserId() }/userLists`)
 
     // Obtenemos las listas de recetas de la categoria
-    const itemsRef = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists`);
+    const itemsRef = this.db.list(`users/${ this.getCurrentUserId() }/userLists`);
     console.log(itemsRef['lenght']);
 
     let canInsert: boolean = true;
 
     let number;
     //  Ahora obtenemos la cantidad de recetas que tiene esta lista
-    const lists = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }`).valueChanges();
+    const lists = this.db.list(`users/${ this.getCurrentUserId() }/userLists/${ category }`).valueChanges();
     lists.subscribe((users) => {
 
       number = users.length
@@ -195,7 +203,7 @@ export class DbService {
     // Obtenemos el id y email del usurio concurrente del localStorage
     const { id, email } = JSON.parse(localStorage.getItem('currentUser'));
 
-    console.log(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }/${ idFirebase }`)
+    console.log(`users/${ this.getCurrentUserId() }/userLists/${ category }/${ idFirebase }`)
 
     // Con esto borramos la receta pero para este proyecto en lugar de borrar la receta la ocultamos
     //this.db.object(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }/${ idFirebase }`).remove();
@@ -210,13 +218,13 @@ export class DbService {
 
     console.log(object);
 
-    const itemsRef = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists`);
+    const itemsRef = this.db.list(`users/${ this.getCurrentUserId() }/userLists`);
     itemsRef.update(category, object);
 
   }
 
   createNewRecipeList(listName) {
-    const itemsRef = this.db.list(`users/69DHXLGnntbBAybMhU3TFROrb702`);
+    const itemsRef = this.db.list(`users/${ this.getCurrentUserId() }`);
 
     let object = { listName: { "recipe-0": "0" } };
 
@@ -228,5 +236,26 @@ export class DbService {
     console.log(object)
 
     itemsRef.update("userLists", object);
+  }
+
+  deleteRecipeList(listName) {
+    console.log(`users/${ this.getCurrentUserId() }/userLists/${ listName }`)
+    this.db.object(`users/${ this.getCurrentUserId() }/userLists/${ listName }`).remove();
+  }
+
+  getCurrentUser() {
+    let userAuth = this.afAuth.authState.pipe(first()).toPromise();
+    userAuth.then(u => {
+
+      // Guardamos en localStorage el id y email del usuario actual
+      localStorage.setItem('currentUser', JSON.stringify({ id: u['uid'], email: u['email'] }));
+      return u;
+    })
+    return userAuth;
+  }
+
+  getCurrentUserId() {
+    this.getCurrentUser();
+    return JSON.parse(localStorage.getItem('currentUser'))['id'];
   }
 }

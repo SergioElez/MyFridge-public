@@ -17,6 +17,7 @@ export class RecipeComponent implements OnInit {
   recipeName: string;
   recipeIngredients = [];
   recipeMeasures = [];
+  recipeMeasuresString = [];
   recipeYoutubeLink: string;
   recipeTags;
   recipeInstructions: string;
@@ -27,6 +28,8 @@ export class RecipeComponent implements OnInit {
 
   userLists;
 
+  // Cantidad de comensales
+  numberOfDiners = 1;
 
   enlaceReceta;
 
@@ -79,7 +82,48 @@ export class RecipeComponent implements OnInit {
         if (recipe[ingredient] && recipe[measure])
         {
           this.recipeIngredients.push(recipe[ingredient]);
-          this.recipeMeasures.push(recipe[measure]);
+
+          // Obtenemos el numero de medida
+          let measureNumber = recipe[measure].split(' ')[0];
+
+          // FORMATEO
+
+          // SI es un numero
+          if (!isNaN(parseInt(measureNumber)))
+          {
+            // Le quitamos los string que no queremos 
+            if (measureNumber.search('g') != -1)
+              measureNumber = recipe[measure].split('g')[0];
+            if (measureNumber.search('tbs') != -1)
+              measureNumber = recipe[measure].split('tbs')[0];
+            if (measureNumber.search('ml') != -1)
+              measureNumber = recipe[measure].split('ml')[0];
+            if (measureNumber.search('l') != -1)
+              measureNumber = recipe[measure].split('l')[0];
+            if (measureNumber.search('-') != -1)
+              measureNumber = recipe[measure].split('-')[0];
+
+            // Si hay un / dividimos la cantidad
+            if (measureNumber.search('/') != -1)
+              measureNumber = parseInt(recipe[measure].split('/')[0]) / parseInt(recipe[measure].split('/')[1]);
+          }
+          else
+          {
+            // Si no es un numero la cantidad es 1
+            measureNumber = 1;
+          }
+
+
+          let measureString = '';
+          for (let i = 1; i < recipe[measure].split(' ').length; i++)
+          {
+            measureString = measureString + recipe[measure].split(' ')[i] + " ";
+          }
+          // console.log(measureNumber)
+          // console.log(measureString)
+
+          this.recipeMeasures.push(measureNumber);
+          this.recipeMeasuresString.push(measureString);
         } else if (recipe[ingredient])
         {
           this.recipeIngredients.push(recipe[ingredient]);
@@ -87,7 +131,7 @@ export class RecipeComponent implements OnInit {
       }
 
       // console.log(this.recipeIngredients)
-      // console.log(this.recipeMeasures)
+      console.log(recipe)
 
       this.appService.setSpecificRecipe(recipe);
     });

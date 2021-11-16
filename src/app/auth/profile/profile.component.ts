@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
   async ngOnInit() {
 
     // Obtenemos las listas del usuario actual
-    let recipeList = await this.appService.getRecipeAllListFromUser("69DHXLGnntbBAybMhU3TFROrb702")
+    let recipeList = await this.appService.getRecipeAllListFromUser(this.db.getCurrentUserId())
     recipeList.subscribe(listsRecipes => {
 
       // Si por lo que sea no aun no ha hecho la peticion a la API, recarga la pagina para que la haga
@@ -136,7 +136,7 @@ export class ProfileComponent implements OnInit {
     // CON ESTO OBTENEMOS LA CANTIDAD DE LISTAS QUE TIENE EL USUARIO
     // ES SUPER IMPORTANTE QUE ESTE METODO ESTE DEBAJO DEL ANTERIOR SUBSCRIBE YA QUE SI NO, NO RECOQUE BIEN LA CANTIDAD DE LISTAS
 
-    let recipeListGet = await this.appService.getRecipeAllListFromUser("69DHXLGnntbBAybMhU3TFROrb702")
+    let recipeListGet = await this.appService.getRecipeAllListFromUser(this.db.getCurrentUserId())
     recipeListGet.subscribe(listsRecipes => {
       this.objectRecipe = listsRecipes;
     })
@@ -160,6 +160,7 @@ export class ProfileComponent implements OnInit {
   deleteRecipeFromList(category, idFirebase, idRecipe): void {
     console.log(idFirebase)
     this.db.deleteRecipeFromCategory(idFirebase, idRecipe, category);
+    window.location.reload();
   }
 
   createNewRecipeList(listName): void {
@@ -179,12 +180,15 @@ export class ProfileComponent implements OnInit {
     this.listNameToDelete = listName;
   }
 
-  acceptDeleteList() {
 
-  }
 
   cancelDeleteList() {
+    this.clickDeleteList = false;
+  }
 
+  acceptDeleteList() {
+    this.db.deleteRecipeList(this.listNameToDelete);
+    window.location.reload();
   }
 
 }

@@ -21,9 +21,11 @@
       <div id="categories" *ngIf="clickAddToCategory">
         <li>Añadir esta receta a una de tus listas:</li>
         <li *ngFor="let list of userLists" (click)="addThisRecipeToUserList(list.title)">
-          {{list.title}}
-          <mat-icon>add</mat-icon>
-          <!-- <mat-icon (click)="addThisRecipeToUserList(list.title)">clear</mat-icon> -->
+          <div *ngIf="list.title != 'favourites'">
+            {{list.title}}
+            <mat-icon>add</mat-icon>
+            <!-- <mat-icon (click)="addThisRecipeToUserList(list.title)">clear</mat-icon> -->
+          </div>
         </li>
       </div>
 
@@ -40,15 +42,15 @@
           </button>
 
           <button (click)="addToCategory()" *ngIf="!clickAddToCategory" style="float: right; border: 0px; padding: 5px">
-            <mat-icon>folder</mat-icon>
+            <mat-icon>library_add</mat-icon>
           </button>
 
           <button (click)="addToCategory()" *ngIf="clickAddToCategory" style="float: right; border: 0px; padding: 5px">
-            <mat-icon>folder_open</mat-icon>
+            <span>Cancelar</span>
+            <mat-icon>cancel</mat-icon>
           </button>
         </h4>
 
-        <!-- SI HAY TAGS SE MUESTRAN -->
       </div>
 
 
@@ -57,7 +59,7 @@
         <ul>
           <!-- Mostramos los ingredientes con las cantidades -->
           <li *ngFor="let ingredient of recipeIngredients; let i = index">
-            {{ ingredient | titlecase }} - <b> {{recipeMeasures[i]}} </b>
+            {{ ingredient | titlecase }} - <b> {{recipeMeasures[i] * numberOfDiners}} {{recipeMeasuresString[i]}} </b>
           </li>
         </ul>
 
@@ -66,6 +68,12 @@
           <div class="columns">
             <!-- SI HAY VIDEO DE YOUTUBE SE MUESTRA -->
             <a *ngIf="recipeYoutubeLink" href="{{ recipeYoutubeLink }}" target="_blank">Ver tutorial en YouTube</a>
+
+            <br>
+            <div style="float:right;">
+              <span style="margin: 0.8em;">Cantidad de comensales:</span>
+              <input type="number" size="1" value="1" style="text-align:center; width:5em" [(ngModel)]="numberOfDiners">
+            </div>
 
             <div style="margin-top:2em">
               <p style="margin:0">Comparte la receta con tus amigos:</p>
@@ -83,6 +91,7 @@
     </div>
     <div class="row">
       <div class="twelve columns">
+        <!-- SI HAY TAGS SE MUESTRAN -->
         <h5 *ngIf="recipeTags">Tags: <em>{{recipeTags}}</em></h5>
         <!-- <h5>{{ recipeName }}</h5> -->
         <p id="recipeInstructions">{{ recipeInstructions }}</p>

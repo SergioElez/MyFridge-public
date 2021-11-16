@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     NavbarComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     FormsModule,

@@ -31,17 +31,18 @@ export class NavbarComponent implements OnInit {
   }
 
   async checkLog() {
-    const u = await this.authService.getCurrentUser();
+    const u = await this.dbService.getCurrentUser();
 
     if (u != null)
     {
       this.isLoggued = true;
       this.userName = u["email"];
 
-      console.log(u)
+      //console.log(this.dbService.getCurrentUserId())
+
       let user = this.dbService.getUser(u["uid"])
       user.subscribe(user => {
-        // console.log(user);
+        console.log(user);
       })
     }
   }

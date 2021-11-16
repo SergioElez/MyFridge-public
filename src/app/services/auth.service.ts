@@ -79,18 +79,20 @@ export class AuthService {
     }
   }
 
-  getCurrentUser() {
-    let userAuth = this.afAuth.authState.pipe(first()).toPromise();
-    userAuth.then(u => {
-
-      // Guardamos en localStorage el id y email del usuario actual
-      localStorage.setItem('currentUser', JSON.stringify({ id: u['uid'], email: u['email'] }));
-      return u;
-    })
-    return userAuth;
-
-
-
-  }
+  // getCurrentUser() {
+  // let userAuth = this.afAuth.authState.pipe(first()).toPromise();
+  // userAuth.then(u => {
+  // 
+  // Guardamos en localStorage el id y email del usuario actual
+  // localStorage.setItem('currentUser', JSON.stringify({ id: u['uid'], email: u['email'] }));
+  // return u;
+  // })
+  // return userAuth;
+  // }
+  // 
+  // getCurrentUserId() {
+  // this.getCurrentUser();
+  // return JSON.parse(localStorage.getItem('currentUser'))['id'];
+  // }
 }
 

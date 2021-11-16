@@ -23,10 +23,12 @@
                     <mat-card *ngFor="let recipe of recipesByName">
                         <img mat-card-image src="{{recipe.strMealThumb}}" alt="">
                         <mat-card-content>
-                            <h5>{{recipe.strMeal}}</h5>
+                            <h5 style="text-align: center;">{{recipe.strMeal}}</h5>
                         </mat-card-content>
                         <mat-card-actions>
-                            <a mat-raised-button routerLink="/recipe/{{recipe.idMeal}}">Ver receta</a>
+                            <a style="margin-left: 35%; margin-bottom: 5%;" mat-raised-button
+                                routerLink="/recipe/{{recipe.idMeal}}">Ver
+                                receta</a>
                         </mat-card-actions>
                     </mat-card>
                 </div>
