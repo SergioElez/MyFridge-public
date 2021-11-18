@@ -18,24 +18,24 @@
 
     <!-- AQUI UTILIZO UNA PIPE -->
     <!-- HACEMOS QUE SI NO HAY RECETAS EN ESTA CATEGORIA NO MUESTRA EL TITULO -->
-    <h2 *ngIf='recipeList.title != "favourites" && recipeList.list.length > 0'>{{recipeList.title | titlecase}}
+    <h2 *ngIf='recipeList.title != "favourites"'>{{recipeList.title | titlecase}}
       <button (click)="deleteList(recipeList.title)" style="border: 0px; padding: 5px">
         <mat-icon *ngIf="!clickDeleteList">clear</mat-icon>
         <mat-icon *ngIf="clickDeleteList">cancel</mat-icon>
       </button>
     </h2>
-    <h2 *ngIf='recipeList.title == "favourites" && recipeList.list.length > 0'>Favoritos</h2>
+
+    <h2 *ngIf='recipeList.title == "favourites"'>Favoritos</h2>
+    <p *ngIf='recipeList.list.length == 0'>No hay recetas</p>
 
     <span *ngIf="clickDeleteList && listNameToDelete == recipeList.title">Quieres borrar esta lista?
       <button (click)="cancelDeleteList()" style="border: 0px; padding: 5px">
         <mat-icon>clear</mat-icon>
       </button>
-      <button (click)="acceptDeleteList()" style="border: 0px; padding: 5px">
+      <button (click)="cancelDeleteList()" style="border: 0px; padding: 5px">
         <mat-icon>check</mat-icon>
       </button>
     </span>
-
-
 
     <div class="row">
       <div class="twelve columns">

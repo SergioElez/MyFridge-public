@@ -17,15 +17,23 @@
                     <a *ngIf="!isLoggued" tabindex="0" class="nav-link" routerLink="login">Login</a>
                     <a *ngIf="isLoggued" tabindex="0" class="nav-link" [routerLink]="['/profile']">{{userName}}</a>
                 </li>
+
             </ul>
+            <!-- MOVIL -->
             <mat-icon id="menuToggler" [matMenuTriggerFor]="menu">more_vert</mat-icon>
             <mat-menu #menu="matMenu">
                 <a tabindex="0" mat-menu-item routerLink="">Buscar Recetas</a>
                 <!-- <a tabindex="0" mat-menu-item routerLink="">Categorias</a> -->
-                <a tabindex="0" mat-menu-item routerLink="random">Random</a>
+                <a tabindex="0" mat-menu-item routerLink="random">Receta Aleatoria</a>
                 <mat-divider></mat-divider>
-                <a tabindex="0" mat-menu-item routerLink="login">Login</a>
+                <a *ngIf="!isLoggued" tabindex="0" mat-menu-item routerLink="login">Login</a>
+                <a *ngIf="isLoggued" tabindex="0" mat-menu-item [routerLink]="['/profile']">Perfil</a>
             </mat-menu>
+        </div>
+        <div *ngIf="isLoggued" class="nav-item">
+            <!-- Si esta logueado sale el logout-->
+            <a tabindex="0" class="nav-link" style="float: right; font-size: 0.8em;"
+                [routerLink]="['/logout']">Logout</a>
         </div>
     </mat-toolbar>
 </nav>

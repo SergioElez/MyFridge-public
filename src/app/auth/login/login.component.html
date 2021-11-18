@@ -11,6 +11,10 @@
         </div>
         <button class="buttonSubmit" type="submit" color="primary">Login</button>
       </form>
+      <span class="wrongField" *ngIf="wrongFields">*Faltan campos por rellenar <br><br></span>
+      <span class="wrongField" *ngIf="wrongEmail">*El correo no es valido <br><br></span>
+      <span class="wrongField" *ngIf="wrongPassword">*La contraseña no es correcta <br><br></span>
+      <span class="wrongField" *ngIf="userNotFound">*No ningun usuario con ese correo <br><br></span>
     </mat-card-content>
     <p>No tienes cuenta? <a tabindex="0" class="link" [routerLink]="['/register']"> Registrate</a></p>
   </mat-card>

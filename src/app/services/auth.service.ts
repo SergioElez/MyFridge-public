@@ -6,13 +6,16 @@ import { DbService } from './db.service';
 import { Observable } from 'rxjs';
 import auth from 'firebase';
 import { AppService } from './app.service';
+import { NavbarComponent } from '../components/navbar/navbar.component';
+import { Router } from '@angular/router';
+import { LoginComponent } from '../auth/login/login.component';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
 
-  constructor(public afAuth: AngularFireAuth, public dbService: DbService, private appService: AppService) {
+  constructor(public afAuth: AngularFireAuth, public dbService: DbService, private appService: AppService, private router: Router) {
 
     // Como obtener un usuario
     // let user = this.dbService.getUser("69DHXLGnntbBAybMhU3TFROrb702")
@@ -33,22 +36,36 @@ export class AuthService {
     try
     {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
-      // this.user = this.afAuth.authState;
-      // console.log(result["user"].uid);
+
+      console.log(result);
+      console.log(result["user"].uid);
 
       let user = this.dbService.getUser(result["user"].uid);
 
       user.subscribe(user => {
         this.dbService.currentUser = JSON.parse(user);
         // console.log("current user desde login");
-        // console.log(this.dbService.currentUser["name"]);
       })
 
-      return result;
+      // Navegamos
+      this.router.navigate(['/profile'])
+      NavbarComponent.logued = true;
+
     }
     catch (err)
     {
-      console.log(err);
+      if (err.code === 'auth/user-not-found')
+      {
+        LoginComponent.userNotFound = true;
+        LoginComponent.wrongPassword = false;
+        console.log(err.code);
+      }
+      if (err.code === 'auth/wrong-password')
+      {
+        LoginComponent.wrongPassword = true;
+        LoginComponent.userNotFound = false;
+        console.log(err.code);
+      }
     }
   }
 

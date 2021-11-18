@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
 
       let user = this.dbService.getUser(u["uid"])
       user.subscribe(user => {
-        console.log(user);
+        // console.log(user);
       })
     }
   }
