@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DbService } from 'src/app/services/db.service';
 
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
 
   public isLoggued = false;
   public userName = "";
-  constructor(private authService: AuthService, public dbService: DbService) { }
+  constructor(private authService: AuthService, public dbService: DbService, public router: Router) { }
 
   async ngOnInit() {
     this.checkLog();
@@ -45,6 +46,18 @@ export class NavbarComponent implements OnInit {
         // console.log(user);
       })
     }
+  }
+
+  logout() {
+    console.log("Logout")
+
+    this.userName = "Perfil"
+    NavbarComponent.logued = false;
+    this.isLoggued = false;
+
+    this.authService.logout();
+    this.router.navigate(['/'])
+
   }
 
 }
