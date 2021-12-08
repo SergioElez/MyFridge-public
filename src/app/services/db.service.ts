@@ -93,7 +93,6 @@ export class DbService {
 
       if (users.length > 0)
       {
-        // poner try o if no es null
         let list = users[2];
 
         // Asi recorro un objeto
@@ -111,12 +110,9 @@ export class DbService {
       }
       else
         console.log(`No se encuentra el usuario!! ${ userId }`)
-
-
     })
 
     return subject;
-
   }
 
   getRecipeListFromUser(userId, recipeName): Observable<string[]> {
@@ -138,7 +134,6 @@ export class DbService {
 
         // Con esto guardo los ids de las recetas de la lista con nombre X y del usuario X
 
-        // console.log({ value: list[key] }["value"])
         idRecipes.push({ value: list[key] }["value"])
 
         subject.next(idRecipes);
@@ -146,15 +141,9 @@ export class DbService {
     })
 
     return subject;
-
   }
 
   addRecipeToCategory(idRecipe, category) {
-    // Obtenemos el id y email del usurio concurrente del localStorage
-    const { id, email } = JSON.parse(localStorage.getItem('currentUser'));
-
-
-    // const categoryDb = this.db.object(`users/69DHXLGnntbBAybMhU3TFROrb702/userLists/${ category }`);
     console.log(`users/${ this.getCurrentUserId() }/userLists`)
 
     // Obtenemos las listas de recetas de la categoria
@@ -162,7 +151,6 @@ export class DbService {
     console.log(itemsRef['lenght']);
 
     let canInsert: boolean = true;
-
     let number;
     //  Ahora obtenemos la cantidad de recetas que tiene esta lista
     const lists = this.db.list(`users/${ this.getCurrentUserId() }/userLists/${ category }`).valueChanges();
@@ -170,14 +158,8 @@ export class DbService {
 
       number = users.length
 
-      console.log(users.length);
-
-
-      console.log(number);
-
       let newIdRecipe = "recipe-" + number;
       console.log(newIdRecipe);
-
 
       // Creamos el objeto que va acontener el id de la receta
       let object = { newIdRecipe: parseInt(idRecipe) };
@@ -194,14 +176,9 @@ export class DbService {
         canInsert = false;
       }
     })
-
-    // user.set({ id: id, name: name });
-
   }
 
   deleteRecipeFromCategory(idFirebase, idRecipe, category) {
-    // Obtenemos el id y email del usurio concurrente del localStorage
-    const { id, email } = JSON.parse(localStorage.getItem('currentUser'));
 
     console.log(`users/${ this.getCurrentUserId() }/userLists/${ category }/${ idFirebase }`)
 
@@ -248,7 +225,7 @@ export class DbService {
     userAuth.then(u => {
 
       // Guardamos en localStorage el id y email del usuario actual
-      localStorage.setItem('currentUser', JSON.stringify({ id: u['uid'], email: u['email'] }));
+      if (u && u['uid']) localStorage.setItem('currentUser', JSON.stringify({ id: u['uid'], email: u['email'] }));
       return u;
     })
     return userAuth;

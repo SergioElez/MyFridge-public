@@ -37,19 +37,21 @@ export class AuthService {
     {
       const result = await this.afAuth.signInWithEmailAndPassword(email, password);
 
-      console.log(result);
-      console.log(result["user"].uid);
-
       let user = this.dbService.getUser(result["user"].uid);
 
       user.subscribe(user => {
         this.dbService.currentUser = JSON.parse(user);
-        // console.log("current user desde login");
       })
+
+      NavbarComponent.loguede = true;
+      localStorage.setItem('logued', "true");
+
+      console.log(localStorage.getItem('logued'));
+      console.log("NavbarComponent.loguede");
+      console.log(NavbarComponent.loguede);
 
       // Navegamos
       this.router.navigate(['/profile'])
-      NavbarComponent.logued = true;
 
     }
     catch (err)
@@ -73,6 +75,7 @@ export class AuthService {
     try
     {
       await this.afAuth.signOut();
+      localStorage.setItem('logued', "false");
     }
     catch (err)
     {

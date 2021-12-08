@@ -108,7 +108,6 @@ export class AppService {
 
   // Obtengo una receta por nombre (Este metodo me costo bastante por el tema de los observer y subscribe)
   getRecipeAllListFromUser(userID: string): Observable<Object> {
-
     var subject = new Subject<Object>();
 
     // Array de objetos lista que contiene el nombre de la lista y la lista de recetas
@@ -161,19 +160,11 @@ export class AppService {
             subject.next(recipeList);
             return subject
           })
-
         }
-
       }
-
       subject.next(recipeList);
       return subject
-
     })
-    subject.subscribe(listsRecipes => {
-      // console.log(listsRecipes)
-    })
-
     return subject
   }
 
@@ -190,7 +181,6 @@ export class AppService {
 
   // Obtengo una receta por nombre (Este metodo me costo bastante por el tema de los observer y subscribe)
   getRecipeListFromUser(userID: string, list): Observable<any> {
-
     var recipesArray = new Subject<Observable<any>[]>();
     let recipes: Observable<any>[] = [];
 
@@ -222,7 +212,5 @@ export class AppService {
     recipesArray.subscribe(xd => {
       // console.log(xd)
     })
-
-
   }
 }

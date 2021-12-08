@@ -11,23 +11,33 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class NavbarComponent implements OnInit {
 
-  public static logued = false;
+  public logued;
+  public static loguede;
+  public firstTime = false;
 
   public isLoggued = false;
   public userName = "";
   constructor(private authService: AuthService, public dbService: DbService, public router: Router) { }
 
   async ngOnInit() {
+
+
     this.checkLog();
   }
 
   ngDoCheck() {
-    if (NavbarComponent.logued)
+    this.logued = localStorage.getItem('logued');
+    // console.log(this.logued);
+    // console.log(localStorage.getItem('logued'));
+    // console.log(localStorage.getItem('logued'));
+    if (localStorage.getItem('logued') == "true" && this.firstTime == false)
     {
       this.userName = "Perfil"
       this.isLoggued = true;
       this.checkLog();
-      NavbarComponent.logued = false;
+      // NavbarComponent.logued = false;
+      // localStorage.setItem('logued', "false");
+      this.firstTime = true;
     }
   }
 
@@ -52,7 +62,8 @@ export class NavbarComponent implements OnInit {
     console.log("Logout")
 
     this.userName = "Perfil"
-    NavbarComponent.logued = false;
+    // NavbarComponent.logued = false;
+    localStorage.setItem('logued', "false");
     this.isLoggued = false;
 
     this.authService.logout();

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { NavbarComponent } from 'src/app/components/navbar/navbar.component';
 
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -59,6 +58,7 @@ export class LoginComponent implements OnInit {
     }
     else
       this.wrongFields = true;
+
 
   }
 

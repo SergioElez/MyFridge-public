@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'recipe', loadChildren: () => import('./components/recipe/recipe.module').then(m => m.RecipeModule) },
   { path: 'recipelist', loadChildren: () => import('./components/recipelist/recipelist.module').then(m => m.RecipelistModule) },
   { path: 'login', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule) },
+  { path: 'logout', loadChildren: () => import('./auth/login/login.module').then(m => m.LoginModule) },
   { path: 'register', loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterModule) },
   { path: 'profile', loadChildren: () => import('./auth/profile/profile.module').then(m => m.LoginModule) }
 ];

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/services/app.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DbService } from 'src/app/services/db.service';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-recipe',
@@ -28,28 +29,43 @@ export class RecipeComponent implements OnInit {
 
   userLists;
 
+  logued: boolean;
+
   // Cantidad de comensales
   numberOfDiners = 1;
 
   enlaceReceta;
+  fontSize;
 
   constructor(
     private route: ActivatedRoute,
     private appService: AppService,
     private dbService: DbService,
     private clipboard: Clipboard,
+    private router: Router
   ) {
 
 
   }
 
+
+
   ngOnInit(): void {
+    console.log(this.router.url);
+
     this.getRecipeID();
     this.fetchRecipe(this.recipeID);
     this.enlaceReceta = window.location.href;
 
     this.userLists = JSON.parse(localStorage.getItem('userRecipeList'));
     console.log(this.userLists)
+
+    if (localStorage.getItem('logued') === 'true')
+      this.logued = true;
+    if (localStorage.getItem('logued') === 'false')
+      this.logued = false;
+
+    console.log("this.logued" + this.logued)
 
   }
 
@@ -102,6 +118,8 @@ export class RecipeComponent implements OnInit {
               measureNumber = recipe[measure].split('l')[0];
             if (measureNumber.search('-') != -1)
               measureNumber = recipe[measure].split('-')[0];
+            if (measureNumber.search('rd') != -1)
+              measureNumber = recipe[measure].split('rd')[0];
 
             // Si hay un / dividimos la cantidad
             if (measureNumber.search('/') != -1)

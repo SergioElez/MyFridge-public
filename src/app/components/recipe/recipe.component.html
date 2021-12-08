@@ -32,20 +32,23 @@
       <div>
         <h4 style="text-align:center">{{ recipeName }}
 
-          <button (click)="clickAddRecipeToFavourite()" *ngIf="!isFavorited"
+          <button (click)="clickAddRecipeToFavourite()" *ngIf="!isFavorited && logued"
             style="float: right; border: 0px; padding: 0px">
             <mat-icon>favorite_border</mat-icon>
           </button>
 
-          <button (click)="removeFromFavourites()" *ngIf="isFavorited" style="float: right; border: 0px; padding: 5px">
+          <button (click)="removeFromFavourites()" *ngIf="isFavorited && logued"
+            style="float: right; border: 0px; padding: 5px">
             <mat-icon>favorite</mat-icon>
           </button>
 
-          <button (click)="addToCategory()" *ngIf="!clickAddToCategory" style="float: right; border: 0px; padding: 5px">
+          <button (click)="addToCategory()" *ngIf="!clickAddToCategory  && logued"
+            style="float: right; border: 0px; padding: 5px">
             <mat-icon>library_add</mat-icon>
           </button>
 
-          <button (click)="addToCategory()" *ngIf="clickAddToCategory" style="float: right; border: 0px; padding: 5px">
+          <button (click)="addToCategory()" *ngIf="clickAddToCategory && logued"
+            style="float: right; border: 0px; padding: 5px">
             <span>Cancelar</span>
             <mat-icon>cancel</mat-icon>
           </button>
@@ -72,12 +75,13 @@
             <br>
             <div style="float:right;">
               <span style="margin: 0.8em;">Cantidad de comensales:</span>
-              <input type="number" size="1" value="1" style="text-align:center; width:5em" [(ngModel)]="numberOfDiners">
+              <input type="number" size="1" value="1" min="1" style="text-align:center; width:5em"
+                [(ngModel)]="numberOfDiners">
             </div>
 
-            <div style="margin-top:2em">
+            <div *ngIf="logued" style="margin-top:2em">
               <p style="margin:0">Comparte la receta con tus amigos:</p>
-              <input type="text" value="{{enlaceReceta}}" size="29">
+              <input type="text" value="{{enlaceReceta}}" size="30">
 
               <button (click)="share()" style=" border: 0px; padding:1em">
                 <mat-icon>file_copy</mat-icon>

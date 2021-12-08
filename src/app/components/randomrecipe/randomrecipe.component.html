@@ -1,41 +1,104 @@
-<section id="random" class="d-flex flex-row">
+<section id="recipe" class="d-flex flex-row">
   <div class="container">
     <div class="d-flex" id="randomWrapper">
       <div class="flex-40">
-        <h1>Receta Aleatoria</h1>
       </div>
       <div class="d-flex flex-col flex-60">
         <div class="btnGroup">
-          <a tabindex="0" class="button btnSearchRecipe" routerLink="/landing">
-            <span>Buscar receta</span>
+          <a tabindex="0" class="button btnSearchRecipe" routerLink="/category/{{recipeCategory}}">
+            <span>Más recetas de {{recipeCategory}}</span>
           </a>
-          <button tabindex="0" class="button btnRandomRecipe" (click)="fetchRandomRecipe()">
-            <span>Otra receta aleatoria</span>
-          </button>
+          <br>
+          <br>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="four columns">
-        <img id="randomMealImg" src="{{ mealThumb }}" alt="{{ mealName }}" />
+        <img *ngIf="!clickAddToCategory" id="randomMealImg" src="{{ recipeThumb }}" />
       </div>
-      <div class="eight columns mealMetadata" id="randomMealMetadata">
+
+      <div id="categories" *ngIf="clickAddToCategory">
+        <li>Añadir esta receta a una de tus listas:</li>
+        <li *ngFor="let list of userLists" (click)="addThisRecipeToUserList(list.title)">
+          <div *ngIf="list.title != 'favourites'">
+            {{list.title}}
+            <mat-icon>add</mat-icon>
+            <!-- <mat-icon (click)="addThisRecipeToUserList(list.title)">clear</mat-icon> -->
+          </div>
+        </li>
+      </div>
+
+      <div>
+        <h4 style="text-align:center">{{ recipeName }}
+
+          <button (click)="clickAddRecipeToFavourite()" *ngIf="!isFavorited && logued"
+            style="float: right; border: 0px; padding: 0px">
+            <mat-icon>favorite_border</mat-icon>
+          </button>
+
+          <button (click)="removeFromFavourites()" *ngIf="isFavorited && logued"
+            style="float: right; border: 0px; padding: 5px">
+            <mat-icon>favorite</mat-icon>
+          </button>
+
+          <button (click)="addToCategory()" *ngIf="!clickAddToCategory  && logued"
+            style="float: right; border: 0px; padding: 5px">
+            <mat-icon>library_add</mat-icon>
+          </button>
+
+          <button (click)="addToCategory()" *ngIf="clickAddToCategory && logued"
+            style="float: right; border: 0px; padding: 5px">
+            <span>Cancelar</span>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </h4>
+
+      </div>
+
+
+
+      <div class="eight columns mealMetadata" id="mealMetadata">
         <ul>
-          <li *ngFor="let items of mealIngredients">
-            {{ items }}
+          <!-- Mostramos los ingredientes con las cantidades -->
+          <li *ngFor="let ingredient of recipeIngredients; let i = index">
+            {{ ingredient | titlecase }} - <b> {{recipeMeasures[i] * numberOfDiners}} {{recipeMeasuresString[i]}} </b>
           </li>
         </ul>
+
+
         <div class="row">
           <div class="columns">
-            <a *ngIf="mealYoutubeLink" href="{{ mealYoutubeLink }}">Ver en YouTube</a>
+            <!-- SI HAY VIDEO DE YOUTUBE SE MUESTRA -->
+            <a *ngIf="recipeYoutubeLink" href="{{ recipeYoutubeLink }}" target="_blank">Ver tutorial en YouTube</a>
+
+            <br>
+            <div style="float:right;">
+              <span style="margin: 0.8em;">Cantidad de comensales:</span>
+              <input type="number" size="1" value="1" min="1" style="text-align:center; width:5em"
+                [(ngModel)]="numberOfDiners">
+            </div>
+
+            <div *ngIf="logued" style="margin-top:2em">
+              <p style="margin:0">Comparte la receta con tus amigos:</p>
+              <input type="text" value="{{enlaceReceta}}" size="30">
+
+              <button (click)="share()" style=" border: 0px; padding:1em">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+
+            </div>
+
           </div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="twelve columns">
-        <h5>{{ mealName }}</h5>
-        <p id="mealInstructions">{{ mealInstructions }}</p>
+        <!-- SI HAY TAGS SE MUESTRAN -->
+        <h5 *ngIf="recipeTags">Tags: <em>{{recipeTags}}</em></h5>
+        <!-- <h5>{{ recipeName }}</h5> -->
+        <p id="recipeInstructions">{{ recipeInstructions }}</p>
       </div>
     </div>
   </div>

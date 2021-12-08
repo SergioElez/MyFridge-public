@@ -1,17 +1,11 @@
-#random {
+#recipe {
     margin-top: 30px
 }
-.btnGroup {
-    margin-bottom: 20px
-}
-.btnGroup .button:first-of-type {
-    margin-right: 20px
-}
-#randomMealImg {
+#mealImg {
     height: 80%;
-    width: 80%
+    width: 80%;
 }
-#randomMealMetadata {
+#mealMetadata {
     font-size: 0.90em;
 }
 #mealInstructions {
@@ -23,4 +17,14 @@ h5 {
 }
 .heading {
     margin-bottom: 10px
+}
+img {
+    border-radius:25% !important;
+    margin: 5%;
+}
+
+#categories{
+    text-align: center;
+    	display: inline !important;
+        list-style: none;
 }

@@ -82,7 +82,6 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-
     // Email valido
     if (!this.validateEmail(email))
     {
@@ -93,7 +92,6 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-
     // Contraseñas iguales
     if (password !== password2)
     {
@@ -103,7 +101,6 @@ export class RegisterComponent implements OnInit {
       this.wrongPasswordsLength = false;
       return false;
     }
-
 
     // Contraseñas minimo 6 caracteres
     if (password.length < 6 && password2.length < 6)
