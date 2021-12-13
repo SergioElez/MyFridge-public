@@ -58,6 +58,8 @@ export class RegisterComponent implements OnInit {
       {
         this.dbService.createUser({ id: user["user"].uid, name: name, email: email });
 
+        localStorage.setItem('logued', "true");
+
         // Navegar a perfil
         this.router.navigate(['/profile'])
       }

@@ -124,6 +124,9 @@ export class RecipeComponent implements OnInit {
             // Si hay un / dividimos la cantidad
             if (measureNumber.search('/') != -1)
               measureNumber = parseInt(recipe[measure].split('/')[0]) / parseInt(recipe[measure].split('/')[1]);
+
+            if (isNaN(measureNumber))
+              measureNumber = 1;
           }
           else
           {

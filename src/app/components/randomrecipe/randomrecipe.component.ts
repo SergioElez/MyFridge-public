@@ -49,10 +49,8 @@ export class RandomrecipeComponent implements OnInit {
   ngOnInit(): void {
     this.fetchRandomRecipe();
 
-    this.enlaceReceta = window.location.href;
 
     this.userLists = JSON.parse(localStorage.getItem('userRecipeList'));
-    console.log(this.userLists)
 
     if (localStorage.getItem('logued') === 'true')
       this.logued = true;
@@ -73,6 +71,8 @@ export class RandomrecipeComponent implements OnInit {
       this.recipeCategory = recipe.strCategory;
       this.recipeInstructions = recipe.strInstructions;
       this.recipeYoutubeLink = recipe.strYoutube;
+
+      this.enlaceReceta = window.location.href.replace('random', "recipe/" + this.recipeID);
 
       // Ponemos espacios entre las comas
       if (recipe.strTags)
@@ -113,6 +113,10 @@ export class RandomrecipeComponent implements OnInit {
             // Si hay un / dividimos la cantidad
             if (measureNumber.search('/') != -1)
               measureNumber = parseInt(recipe[measure].split('/')[0]) / parseInt(recipe[measure].split('/')[1]);
+
+            if (isNaN(measureNumber))
+              measureNumber = 1;
+
           }
           else
           {
@@ -120,14 +124,13 @@ export class RandomrecipeComponent implements OnInit {
             measureNumber = 1;
           }
 
-
           let measureString = '';
           for (let i = 1; i < recipe[measure].split(' ').length; i++)
           {
             measureString = measureString + recipe[measure].split(' ')[i] + " ";
           }
-          console.log(measureNumber)
-          console.log(measureString)
+          // console.log(measureNumber)
+          // console.log(measureString)
 
           this.recipeMeasures.push(measureNumber);
           this.recipeMeasuresString.push(measureString);

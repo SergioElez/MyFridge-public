@@ -155,7 +155,8 @@ export class AppService {
             if (this.CheckDuplicates(newRecipe, recipeList))
               recipeList.push(newRecipe)
 
-            // console.log(JSON.stringify(recipeList))
+            // console.log(recipeList)
+            localStorage.setItem('recipeList', JSON.stringify(recipeList));
 
             subject.next(recipeList);
             return subject

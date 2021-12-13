@@ -68,7 +68,8 @@ export class DbService {
     const { id, name, email } = user;
 
     const users = this.db.object('users/' + id);
-    users.set({ id: id, name: name });
+
+    users.set({ id: id, name: name, userLists: { favourites: { "recipe-0": -1 } } });
 
     console.log("Usuario creado: " + id + " mail: " + email)
 
@@ -169,7 +170,16 @@ export class DbService {
         Object.getOwnPropertyDescriptor(object, 'newIdRecipe'));
       delete object['newIdRecipe'];
 
-      // Comprobar si ya existe la receta en la lista
+      // Comprobamos si la receta ya esta en la lista
+      for (let i = 0; i < users.length; i++)
+      {
+        if (users[i] == idRecipe)
+        {
+          canInsert = false;
+        }
+      }
+
+      // Si ya existe la receta en la lista
       if (canInsert)
       {
         itemsRef.update(category, object);
